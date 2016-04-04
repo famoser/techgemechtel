@@ -1,0 +1,6 @@
+black: 404040
+white: efefef
+
+green: 0c8240
+blue: 016699
+yellow: a8782b

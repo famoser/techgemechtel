@@ -1,0 +1,28 @@
+# this file reroutes all request to the index.php file
+
+# turn the rewrite engine on
+RewriteEngine On
+RewriteBase /
+
+# exclude specific file endings from the rewrite procedure
+RewriteCond %{REQUEST_URI} !\.css$
+RewriteCond %{REQUEST_URI} !\.js$
+RewriteCond %{REQUEST_URI} !\.pdf$
+RewriteCond %{REQUEST_URI} !\.ico$
+
+# exclude folders from the rewrite procedure
+RewriteCond %{REQUEST_URI} !images/(.*)\.
+
+# redirect all request to non-existing files too
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# the redirection target
+RewriteRule . /index.php [L]
+
+# the error documents should also go to the index file
+ErrorDocument 404   /index.php
+ErrorDocument 403   /index.php
+
+# specify charset
+AddDefaultCharset UTF-8
