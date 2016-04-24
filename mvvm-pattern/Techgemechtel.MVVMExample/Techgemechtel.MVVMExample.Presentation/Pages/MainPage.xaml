@@ -1,0 +1,31 @@
+﻿<Page
+    x:Class="Techgemechtel.MVVMExample.Presentation.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Techgemechtel.MVVMExample.Presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    DataContext="{Binding MainViewModel, Source={StaticResource Locator}}">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBox Style="{StaticResource NoteTexBox}" Text="{Binding NewNote, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Button Style="{StaticResource FlatButton}" Grid.Column="1" Foreground="{ThemeResource ApprooveGreen}" Command="{Binding MainViewModel.AddNoteCommand, Source={StaticResource Locator}}" >
+                <Button.Content>
+                    <SymbolIcon Symbol="Add" />
+                </Button.Content>
+            </Button>
+        </Grid>
+        <ListView Grid.Row="2" ItemsSource="{Binding Notes}" ItemTemplate="{StaticResource NoteDataTemplate}" ItemContainerStyle="{StaticResource StretchListViewItemStyle}" />
+    </Grid>
+</Page>
