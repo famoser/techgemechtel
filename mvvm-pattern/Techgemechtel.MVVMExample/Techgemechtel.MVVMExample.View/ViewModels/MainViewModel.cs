@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -16,15 +11,20 @@ namespace Techgemechtel.MVVMExample.View.ViewModels
     {
         private readonly IDataService _dataService;
 
+        /// <summary>
+        /// constructor used by SimpleIoc which injects the correct dependencies
+        /// </summary>
+        /// <param name="dataService"></param>
         public MainViewModel(IDataService dataService)
         {
             _dataService = dataService;
 
             _addNoteCommand = new RelayCommand(AddNote, () => CanAddNote);
             _deleteNoteCommand = new RelayCommand<NoteModel>(DeleteNote);
-
+            
             if (IsInDesignMode)
             {
+                //create some dummy data if in design mode
                 Notes = new ObservableCollection<NoteModel>()
                 {
                     new NoteModel()
@@ -52,6 +52,7 @@ namespace Techgemechtel.MVVMExample.View.ViewModels
 
         private async void Initialize()
         {
+            //gather notes from data service
             Notes = await _dataService.GetTasks();
         }
 
@@ -69,10 +70,12 @@ namespace Techgemechtel.MVVMExample.View.ViewModels
             set
             {
                 if (Set(ref _newNote, value))
+                    //refresh _addNoteCommand if value has changed
                     _addNoteCommand.RaiseCanExecuteChanged();
             }
         }
 
+        #region add note command
         private readonly RelayCommand _addNoteCommand;
         public ICommand AddNoteCommand => _addNoteCommand;
 
@@ -86,7 +89,9 @@ namespace Techgemechtel.MVVMExample.View.ViewModels
             });
             NewNote = "";
         }
+        #endregion
 
+        #region delete note command
         private readonly RelayCommand<NoteModel> _deleteNoteCommand;
         public ICommand DeleteNoteCommand => _deleteNoteCommand;
 
@@ -94,5 +99,6 @@ namespace Techgemechtel.MVVMExample.View.ViewModels
         {
             Notes.Remove(model);
         }
+        #endregion
     }
 }
